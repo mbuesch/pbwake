@@ -60,10 +60,10 @@ static void config_phase(bool phase)
 	TCNT0 = 0u;
 	if (phase) {
 		min_count = MS2COUNT(2, true);
-		max_count = MS2COUNT(4, true);
+		max_count = MS2COUNT(6, true);
 	} else {
-		min_count = MS2COUNT(40000, false);
-		max_count = MS2COUNT(40000, false);
+		min_count = MS2COUNT(20000, false);
+		max_count = MS2COUNT(60000, false);
 	}
 	count = shr3_get_random_value8(min_count, max_count);
 	load.count = max(count, 1u);
