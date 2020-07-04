@@ -1,0 +1,8 @@
+dep/
+dep-boot/
+obj/
+obj-boot/
+*.hex
+*.bin
+*.dasm
+*.map
