@@ -102,5 +102,7 @@ void load_init(void)
 	TCCR0B = (0u << FOC0A) | (0u << FOC0B) |
 		 (0u << WGM02) |
 		 (1u << CS02) | (0u << CS01) | (0u << CS00);
-	config_phase(false);
+
+	LOADCTL_PORT |= 1u << LOADCTL_BIT;
+	config_phase(true);
 }
