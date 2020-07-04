@@ -62,8 +62,8 @@ static void ports_init(void)
 	        (0 << DDC3) | (0 << DDC2) | (0 << DDC1) | (0 << DDC0);
 	PORTC = (0       )  | (1 << PC6)  | (1 << PC5)  | (1 << PC4) |
 	        (1 << PC3)  | (1 << PC2)  | (1 << PC1)  | (1 << PC0);
-	/* PD0 = UART RxD
-	 * PD1 = UART TxD
+	/* PD0 = input / pullup
+	 * PD1 = input / pullup
 	 * PD2 = input / pullup
 	 * PD3 = input / pullup
 	 * PD4 = input / pullup
