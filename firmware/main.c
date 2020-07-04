@@ -24,19 +24,27 @@
 #include "shr3.h"
 #include "util.h"
 
+#define DEBUG_PORT	PORTB
+#define DEBUG_BIT	PB0
+
 void debugpin(bool newstate)
 {
+#if DEBUG
 	if (newstate)
-		PORTB |= (1u << PB0);
+		DEBUG_PORT |= (1u << DEBUG_BIT);
 	else
-		PORTB &= (uint8_t)~(1u << PB0);
+		DEBUG_PORT &= (uint8_t)~(1u << DEBUG_BIT);
+#endif /* DEBUG */
 }
 
 /* Initialize I/O ports. */
 static void ports_init(void)
 {
+	const uint8_t D = ((DEBUG) ? 1 : 0);
+	const uint8_t ND = !D;
+
 #if IS_ATMEGAx8
-	/* PB0 = output / low
+	/* PB0 = output / low (debug pin)
 	 * PB1 = input / pullup
 	 * PB2 = input / pullup
 	 * PB3 = input / pullup
@@ -46,9 +54,9 @@ static void ports_init(void)
 	 * PB7 = input / pullup
 	 */
 	DDRB =  (0 << DDB7) | (0 << DDB6) | (0 << DDB5) | (0 << DDB4) |
-	        (0 << DDB3) | (0 << DDB2) | (0 << DDB1) | (1 << DDB0);
+	        (0 << DDB3) | (0 << DDB2) | (0 << DDB1) | (D << DDB0);
 	PORTB = (1 << PB7)  | (1 << PB6)  | (1 << PB5)  | (1 << PB4) |
-	        (1 << PB3)  | (1 << PB2)  | (1 << PB1)  | (0 << PB0);
+	        (1 << PB3)  | (1 << PB2)  | (1 << PB1)  | (ND << PB0);
 	/* PC0 = input / pullup
 	 * PC1 = input / pullup
 	 * PC2 = input / pullup
@@ -76,7 +84,7 @@ static void ports_init(void)
 	PORTD = (1 << PD7)  | (1 << PD6)  | (0 << PD5)  | (1 << PD4) |
 	        (1 << PD3)  | (1 << PD2)  | (1 << PD1)  | (1 << PD0);
 #else
-	/* PB0 = output / low
+	/* PB0 = output / low (debug pin)
 	 * PB1 = input / pullup
 	 * PB2 = input / pullup
 	 * PB3 = output / low
@@ -84,9 +92,9 @@ static void ports_init(void)
 	 * PB5 = input / pullup
 	 */
 	DDRB =  (0 << DDB5) | (0 << DDB4) | (1 << DDB3) |
-	        (0 << DDB2) | (0 << DDB1) | (1 << DDB0);
+	        (0 << DDB2) | (0 << DDB1) | (D << DDB0);
 	PORTB = (1 << PB5)  | (1 << PB4)  | (0 << PB3) |
-	        (1 << PB2)  | (1 << PB1)  | (0 << PB0);
+	        (1 << PB2)  | (1 << PB1)  | (ND << PB0);
 #endif
 }
 
