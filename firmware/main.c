@@ -27,6 +27,8 @@
 #define DEBUG_PORT	PORTB
 #define DEBUG_BIT	PB0
 
+static uint32_t EEMEM ee_seed = 1u;
+
 void debugpin(bool newstate)
 {
 #if DEBUG
@@ -108,11 +110,20 @@ static void set_PRR(void)
 #endif /* PRR */
 }
 
+static void rng_init(void)
+{
+	uint32_t seed;
+
+	seed = eeprom_read_dword(&ee_seed);
+	eeprom_update_dword(&ee_seed, seed + 1u);
+	shr3_init(seed);
+}
+
 int _mainfunc main(void)
 {
 	ports_init();
 	set_PRR();
-	shr3_init(1);
+	rng_init();
 	load_init();
 
 	irq_enable();
