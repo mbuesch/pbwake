@@ -87,16 +87,16 @@ static void ports_init(void)
 	        (1 << PD3)  | (1 << PD2)  | (1 << PD1)  | (1 << PD0);
 #else
 	/* PB0 = output / low (debug pin)
-	 * PB1 = input / pullup
+	 * PB1 = output / low
 	 * PB2 = input / pullup
-	 * PB3 = output / low
+	 * PB3 = input / pullup
 	 * PB4 = input / pullup
 	 * PB5 = input / pullup
 	 */
-	DDRB =  (0 << DDB5) | (0 << DDB4) | (1 << DDB3) |
-	        (0 << DDB2) | (0 << DDB1) | (D << DDB0);
-	PORTB = (1 << PB5)  | (1 << PB4)  | (0 << PB3) |
-	        (1 << PB2)  | (1 << PB1)  | (ND << PB0);
+	DDRB =  (0 << DDB5) | (0 << DDB4) | (0 << DDB3) |
+	        (0 << DDB2) | (1 << DDB1) | (D << DDB0);
+	PORTB = (1 << PB5)  | (1 << PB4)  | (1 << PB3) |
+	        (1 << PB2)  | (0 << PB1)  | (ND << PB0);
 #endif
 }
 
