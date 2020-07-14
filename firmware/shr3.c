@@ -66,5 +66,5 @@ uint8_t shr3_get_random_value8(uint8_t min_value, uint8_t max_value)
 
 void shr3_init(uint32_t seed)
 {
-	shr3_state = seed ? seed : 0xFFFFFFFFu;
+	shr3_state = seed ? seed : 0x7FFFFFFFu;
 }
