@@ -2,6 +2,8 @@
 
 # Target device. May be one of:
 #	t13	=> ATTiny13
+#	t25	=> ATTiny25
+#	t45	=> ATTiny45
 #	t85	=> ATTiny85
 #	m328p	=> ATMega328P
 DEV			:= t85
@@ -54,6 +56,24 @@ HFUSE			:= 0xFB
 EFUSE			:=
 endif
 
+ifeq ($(DEV),t25)
+# ATTiny 25
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+F_CPU			:= 128000UL
+LFUSE			:= 0xE4
+HFUSE			:= 0xDD
+EFUSE			:= 0xFF
+endif
+
+ifeq ($(DEV),t45)
+# ATTiny 45
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+F_CPU			:= 128000UL
+LFUSE			:= 0xE4
+HFUSE			:= 0xDD
+EFUSE			:= 0xFF
+endif
+
 ifeq ($(DEV),t85)
 # ATTiny 85
 # 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
@@ -104,6 +124,8 @@ streq = $(and $(filter 1,$(words $2)),$(filter $1,$(firstword $2)))
 deveq = $(call streq,$1,$(DEV))
 
 ifeq ($(strip $(call deveq,t13)\
+	      $(call deveq,t25)\
+	      $(call deveq,t45)\
 	      $(call deveq,t85)\
 	      $(call deveq,m328p)),)
 $(error "DEV=$(DEV) is not supported.")
