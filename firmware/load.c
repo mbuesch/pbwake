@@ -35,7 +35,7 @@
 # define LOADCTL_BIT	PB1
 #endif
 
-#define PHASE_HIGH_MIN_MS	2
+#define PHASE_HIGH_MIN_MS	4
 #define PHASE_HIGH_MAX_MS	6
 
 #define PHASE_LOW_MIN_MS	40000
