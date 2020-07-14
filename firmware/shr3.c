@@ -51,10 +51,10 @@ uint8_t shr3_get_random_value8(uint8_t min_value, uint8_t max_value)
 {
 	uint8_t range, nr_of_bits, value;
 
-	range = (uint8_t)(max_value - min_value);
-	if (range == 0u || min_value > max_value)
+	if (min_value >= max_value)
 		return min_value;
 
+	range = (uint8_t)(max_value - min_value);
 	nr_of_bits = fls8(range);
 	do {
 		value = shr3_get_random_bits(nr_of_bits);
