@@ -49,46 +49,46 @@ BOOT_OFFSET		:=
 
 ifeq ($(DEV),t13)
 # ATTiny 13
-# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT on, SPIEN
 F_CPU			:= 128000UL
-LFUSE			:= 0x7B
+LFUSE			:= 0x5B
 HFUSE			:= 0xFB
 EFUSE			:=
 endif
 
 ifeq ($(DEV),t25)
 # ATTiny 25
-# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT on, SPIEN
 F_CPU			:= 128000UL
 LFUSE			:= 0xE4
-HFUSE			:= 0xDD
+HFUSE			:= 0xCD
 EFUSE			:= 0xFF
 endif
 
 ifeq ($(DEV),t45)
 # ATTiny 45
-# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT on, SPIEN
 F_CPU			:= 128000UL
 LFUSE			:= 0xE4
-HFUSE			:= 0xDD
+HFUSE			:= 0xCD
 EFUSE			:= 0xFF
 endif
 
 ifeq ($(DEV),t85)
 # ATTiny 85
-# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT off, SPIEN
+# 128 kHz, SUT 64 ms, BOD 2.7 V, WDT on, SPIEN
 F_CPU			:= 128000UL
 LFUSE			:= 0xE4
-HFUSE			:= 0xDD
+HFUSE			:= 0xCD
 EFUSE			:= 0xFF
 endif
 
 ifeq ($(DEV),m328p)
 # ATMega 328P
-# 128 kHz, SUT 65 ms, BOD 2.7 V, WDT off, SPIEN
+# 128 kHz, SUT 65 ms, BOD 2.7 V, WDT on, SPIEN
 F_CPU			:= 128000UL
 LFUSE			:= 0xE3
-HFUSE			:= 0xD9
+HFUSE			:= 0xC9
 EFUSE			:= 0xFD
 endif
 
