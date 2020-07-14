@@ -6,12 +6,27 @@
 #	m328p	=> ATMega328P
 DEV			:= t85
 
+# Load pulse configuration (all values in milliseconds):
+
+# Minimum length of high-phase:
+CONF_HIGH_MIN_MS	:= 4
+# Maximum length of high-phase:
+CONF_HIGH_MAX_MS	:= 6
+# Minimum length of low-phase:
+CONF_LOW_MIN_MS		:= 40000
+# Maximum length of low-phase:
+CONF_LOW_MAX_MS		:= 55000
+
 
 ##############################################################################
 ##############################################################################
 ##############################################################################
 
-$(info	DEV=$(DEV))
+$(info	DEV=$(DEV) \
+	CONF_HIGH_MIN_MS=$(CONF_HIGH_MIN_MS) \
+	CONF_HIGH_MAX_MS=$(CONF_HIGH_MAX_MS) \
+	CONF_LOW_MIN_MS=$(CONF_LOW_MIN_MS) \
+	CONF_LOW_MAX_MS=$(CONF_LOW_MAX_MS))
 
 # Project name
 NAME			:= pbwake
@@ -73,7 +88,10 @@ INSTRUMENT_FUNC		:=
 BOOT_INSTRUMENT_FUNC	:=
 
 # Additional compiler flags
-CFLAGS			:=
+CFLAGS			:= -DCONF_HIGH_MIN_MS="$(CONF_HIGH_MIN_MS)" \
+			   -DCONF_HIGH_MAX_MS="$(CONF_HIGH_MAX_MS)" \
+			   -DCONF_LOW_MIN_MS="$(CONF_LOW_MIN_MS)" \
+			   -DCONF_LOW_MAX_MS="$(CONF_LOW_MAX_MS)"
 BOOT_CFLAGS		:= $(CFLAGS)
 LDFLAGS			:=
 

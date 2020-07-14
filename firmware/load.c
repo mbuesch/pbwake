@@ -35,12 +35,6 @@
 # define LOADCTL_BIT	PB1
 #endif
 
-#define PHASE_HIGH_MIN_MS	4
-#define PHASE_HIGH_MAX_MS	6
-
-#define PHASE_LOW_MIN_MS	40000
-#define PHASE_LOW_MAX_MS	55000
-
 #define OCR_PHASE_HIGH		0x01u
 #define OCR_PHASE_LOW		0xFFu
 #define TIMER0PS		256
@@ -67,11 +61,11 @@ static void config_phase(bool phase)
 	TIFR0 = 1u << OCF0A;
 	TCNT0 = 0u;
 	if (phase) {
-		min_count = MS2COUNT(PHASE_HIGH_MIN_MS, true);
-		max_count = MS2COUNT(PHASE_HIGH_MAX_MS, true);
+		min_count = MS2COUNT(CONF_HIGH_MIN_MS, true);
+		max_count = MS2COUNT(CONF_HIGH_MAX_MS, true);
 	} else {
-		min_count = MS2COUNT(PHASE_LOW_MIN_MS, false);
-		max_count = MS2COUNT(PHASE_LOW_MAX_MS, false);
+		min_count = MS2COUNT(CONF_LOW_MIN_MS, false);
+		max_count = MS2COUNT(CONF_LOW_MAX_MS, false);
 	}
 	count = shr3_get_random_value8(min_count, max_count);
 	load.count = max(count, 1u);
