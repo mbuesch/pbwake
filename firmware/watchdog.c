@@ -22,6 +22,8 @@
 #include "watchdog.h"
 #include "util.h"
 
+uint8_t saved_mcusr section_noinit;
+
 /* Write to the WDT hardware register. */
 static alwaysinline void wdt_setup(uint8_t wdto, bool wde, bool wdie)
 {
@@ -56,7 +58,10 @@ static alwaysinline void wdt_setup(uint8_t wdto, bool wde, bool wdie)
 /* Early watchdog timer initialization. */
 static void section_init3 wdt_early_init(void)
 {
+	irq_disable();
+
 	/* Clear WDRF (and all other reset info bits). */
+	saved_mcusr = MCUSR;
 	MCUSR = 0;
 
 	/* Enable the watchdog. */

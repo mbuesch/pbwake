@@ -24,6 +24,7 @@
 #include "main.h"
 #include "shr3.h"
 #include "util.h"
+#include "watchdog.h"
 
 #if IS_ATMEGAx8
 # define LOADCTL_PORT	PORTD
@@ -94,6 +95,7 @@ ISR(TIMER0_COMPA_vect)
 
 void load_init(void)
 {
+	/* Configure the timer hardware. */
 	TCCR0B = 0u;
 	OCR0A = 0u;
 	OCR0B = 0u;
@@ -105,6 +107,19 @@ void load_init(void)
 		 (0u << WGM02) |
 		 (1u << CS02) | (0u << CS01) | (0u << CS00);
 
-	LOADCTL_PORT |= 1u << LOADCTL_BIT;
-	config_phase(true);
+	/* If we had a watchdog-reset or brown-out-reset
+	 * but not a power-on-reset and not an external-reset,
+	 * then start with a low-phase to avoid continuous high
+	 * in case the reset triggers continuously. */
+	if (((saved_mcusr & ((1u << WDRF) | (1u << BORF))) != 0u) &&
+	    ((saved_mcusr & ((1u << PORF) | (1u << EXTRF))) == 0u))
+	{
+		LOADCTL_PORT &= (uint8_t)~(1u << LOADCTL_BIT);
+		config_phase(false);
+	}
+	else /* Start with a high phase. */
+	{
+		LOADCTL_PORT |= 1u << LOADCTL_BIT;
+		config_phase(true);
+	}
 }
