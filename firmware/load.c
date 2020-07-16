@@ -44,34 +44,59 @@
 #define MS2COUNT_LOW(ms)	((uint32_t)((float)(ms) / IRQPERIODMS(OCR_PHASE_LOW)))
 #define MS2COUNT(ms, phase)	((uint8_t)((phase) ? MS2COUNT_HIGH(ms) : MS2COUNT_LOW(ms)))
 
+#define PHASE_LOW_SHORT_DIV	10
+
+enum load_phase {
+	PHASE_LOW,
+	PHASE_HIGH,
+	PHASE_LOW_SHORT,
+};
+
 static struct {
 	uint8_t count;
 } load;
 
-static void config_phase(bool phase)
+static void config_phase(enum load_phase phase)
 {
-	uint8_t count, min_count, max_count;
+	uint8_t ocr, count, min_count, max_count;
 
-	if (phase) {
-		OCR0A = OCR_PHASE_HIGH;
-		TCNT0 = OCR_PHASE_HIGH ^ 0x80u;
-	} else {
-		OCR0A = OCR_PHASE_LOW;
-		TCNT0 = OCR_PHASE_LOW ^ 0x80u;
+	/* Configure the hardware timer period. */
+	switch (phase) {
+	default:
+	case PHASE_LOW:
+	case PHASE_LOW_SHORT:
+		ocr = OCR_PHASE_LOW;
+		break;
+	case PHASE_HIGH:
+		ocr = OCR_PHASE_HIGH;
+		break;
 	}
+	OCR0A = ocr;
+	TCNT0 = ocr ^ 0x80u;
 	TIFR0 = 1u << OCF0A;
 	TCNT0 = 0u;
-	if (phase) {
-		min_count = MS2COUNT(CONF_HIGH_MIN_MS, true);
-		max_count = MS2COUNT(CONF_HIGH_MAX_MS, true);
-	} else {
-		min_count = MS2COUNT(CONF_LOW_MIN_MS, false);
+
+	/* Configure the software counter. */
+	switch (phase) {
+	default:
+	case PHASE_LOW:
 		max_count = MS2COUNT(CONF_LOW_MAX_MS, false);
+		min_count = MS2COUNT(CONF_LOW_MIN_MS, false);
+		break;
+	case PHASE_LOW_SHORT:
+		max_count = MS2COUNT((CONF_LOW_MAX_MS) / PHASE_LOW_SHORT_DIV, false);
+		min_count = max_count;
+		break;
+	case PHASE_HIGH:
+		max_count = MS2COUNT(CONF_HIGH_MAX_MS, true);
+		min_count = MS2COUNT(CONF_HIGH_MIN_MS, true);
+		break;
 	}
 	count = shr3_get_random_value8(min_count, max_count);
 	load.count = max(count, 1u);
 }
 
+/* Hardware timer interrupt service routine. */
 ISR(TIMER0_COMPA_vect)
 {
 	bool phase;
@@ -84,7 +109,7 @@ ISR(TIMER0_COMPA_vect)
 		LOADCTL_PIN |= 1u << LOADCTL_BIT;
 		phase = !!(LOADCTL_PORT & (1u << LOADCTL_BIT));
 
-		config_phase(phase);
+		config_phase(phase ? PHASE_HIGH : PHASE_LOW);
 	}
 
 	wdt_reset();
@@ -115,11 +140,11 @@ void load_init(void)
 	    ((saved_mcusr & ((1u << PORF) | (1u << EXTRF))) == 0u))
 	{
 		LOADCTL_PORT &= (uint8_t)~(1u << LOADCTL_BIT);
-		config_phase(false);
+		config_phase(PHASE_LOW_SHORT);
 	}
 	else /* Start with a high phase. */
 	{
 		LOADCTL_PORT |= 1u << LOADCTL_BIT;
-		config_phase(true);
+		config_phase(PHASE_HIGH);
 	}
 }
