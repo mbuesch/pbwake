@@ -35,6 +35,7 @@ NAME			:= pbwake
 
 # Project source files
 SRCS			:= \
+			bitops.c \
 			load.c \
 			main.c \
 			shr3.c \
