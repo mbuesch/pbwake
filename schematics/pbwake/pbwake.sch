@@ -5,7 +5,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "pbwake"
-Date "2020-07-04"
+Date "2020-07-17"
 Rev "1.0"
 Comp "Michael Buesch <m@bues.ch>"
 Comment1 ""
@@ -77,7 +77,7 @@ L MCU_Microchip_ATtiny:ATtiny13-20PU U1
 U 1 1 5EA2225A
 P 8600 4950
 F 0 "U1" H 8070 4996 50  0000 R CNN
-F 1 "ATtinyXX-20PU" H 8070 4905 50  0000 R CNN
+F 1 "Microcontroller" H 8070 4905 50  0000 R CNN
 F 2 "Package_DIP:DIP-8_W7.62mm" H 8600 4950 50  0001 C CIN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc2535.pdf" H 8600 4950 50  0001 C CNN
 	1    8600 4950
@@ -382,4 +382,6 @@ Wire Wire Line
 	6650 4650 6650 5650
 Connection ~ 6850 4650
 NoConn ~ 8000 4950
+Text Notes 9150 5450 0    50   ~ 0
+ATTiny-13\nATTiny-25\nATTiny-45\nATTiny-85\n(ATMega-328P different pinout)
 $EndSCHEMATC
