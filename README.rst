@@ -18,6 +18,7 @@ Power banks this has been tested with are:
 * Anker PowerCore 20100 model A1271.
 * No-name power bank 2200 mAh / 11 Wh with integrated flashlight LED.
 
+
 Microcontroller
 ===============
 
@@ -34,6 +35,16 @@ Hardware schematics
 ===================
 
 Schematics: `schematics/pbwake/pbwake.pdf <schematics/pbwake/pbwake.pdf>`_
+
+The hardware may be built manually on a simple prototype board.
+
+Board front side:
+
+.. image:: doc/pbwake_front.jpg
+
+Board back side:
+
+.. image:: doc/pbwake_back.jpg
 
 
 Prebuilt firmware images
