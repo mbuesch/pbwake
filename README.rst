@@ -34,7 +34,7 @@ Pbwake supports the following microcontrollers:
 Hardware schematics
 ===================
 
-Schematics: `schematics/pbwake/pbwake.pdf <schematics/pbwake/pbwake.pdf>`_
+Schematics: `schematics/pbwake-attiny/pbwake.pdf <schematics/pbwake-attiny/pbwake.pdf>`_
 
 The hardware may be built manually on a simple prototype board.
 
